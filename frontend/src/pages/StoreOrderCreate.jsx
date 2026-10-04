@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { useEnterToSave } from "../hooks/useEnterToSave";
 import { createPortal } from "react-dom";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Search, X, Plus, Trash2 } from "lucide-react";
+import { Search, X, Plus, Trash2, Check } from "lucide-react";
 import Head from "../components/Head";
 import baseUrl from "../api/api";
 import { mapLocNameToWarehouse as mapWarehouse } from "../utils/warehouseMapping";
@@ -542,19 +542,24 @@ const ItemDropdown = ({ rowId, value, onChange, storeWarehouse, onStockFetched, 
                   <div
                     key={item._id || item.itemName || Math.random()}
                     onClick={() => handleSelectItem(item)}
-                    className={`px-4 py-3 cursor-pointer transition-colors ${
-                      isSelected ? "bg-[#2563eb] text-white" : "hover:bg-[#f1f5f9]"
+                    className={`px-4 py-3 cursor-pointer transition-colors border-b border-[#f1f5f9] last:border-0 ${
+                      isSelected ? "bg-[#f0fdf4] border-l-4 border-l-[#16a34a]" : "hover:bg-[#f1f5f9]"
                     }`}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
-                        <div className={`font-medium text-sm ${isSelected ? "text-white" : "text-[#1f2937]"}`}>
-                          {item.itemName || "Unnamed Item"}
+                        <div className={`font-medium text-sm flex items-center gap-1.5 ${isSelected ? "text-[#15803d]" : "text-[#1f2937]"}`}>
+                          <span>{item.itemName || "Unnamed Item"}</span>
+                          {isSelected && (
+                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#dcfce7] text-[#166534]">
+                              <Check size={10} strokeWidth={3} /> Selected
+                            </span>
+                          )}
                         </div>
-                        <div className={`text-xs mt-1 ${isSelected ? "text-white/80" : "text-[#64748b]"}`}>
+                        <div className={`text-xs mt-1 ${isSelected ? "text-[#16a34a]" : "text-[#64748b]"}`}>
                           {item.isGroup ? (
                             <span className="inline-flex items-center gap-1.5">
-                              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${isSelected ? "bg-white/20 text-white" : "bg-purple-100 text-purple-700"}`}>
+                              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${isSelected ? "bg-[#dcfce7] text-[#166534]" : "bg-purple-100 text-purple-700"}`}>
                                 ITEM GROUP
                               </span>
                               {item.sku ? `• SKU: ${item.sku}` : ''}
@@ -565,10 +570,10 @@ const ItemDropdown = ({ rowId, value, onChange, storeWarehouse, onStockFetched, 
                         </div>
                       </div>
                       <div className="flex flex-col items-end shrink-0">
-                        <div className={`text-xs ${isSelected ? "text-white/80" : "text-[#64748b]"}`}>
+                        <div className={`text-xs ${isSelected ? "text-[#166534]" : "text-[#64748b]"}`}>
                           Current Stock
                         </div>
-                        <div className={`text-sm font-medium mt-0.5 ${isSelected ? "text-white" : Number(stockOnHand) > 0 ? "text-[#10b981]" : "text-[#ef4444]"}`}>
+                        <div className={`text-sm font-medium mt-0.5 ${isSelected ? "text-[#15803d]" : Number(stockOnHand) > 0 ? "text-[#10b981]" : "text-[#ef4444]"}`}>
                           {Number(stockOnHand) > 0 ? `${Number(stockOnHand).toFixed(2)} pcs` : "0.00 pcs"}
                         </div>
                       </div>

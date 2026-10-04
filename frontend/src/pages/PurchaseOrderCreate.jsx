@@ -610,24 +610,29 @@ const ItemDropdown = ({ rowId, value, description, onDescriptionChange, onChange
                   onClick={() => handleSelectItem(item)}
                   className={`px-4 py-3 cursor-pointer transition-colors border-b border-[#f1f5f9] ${
                     isSelected
-                      ? "bg-[#2563eb] text-white"
+                      ? "bg-[#f0fdf4] border-l-4 border-l-[#16a34a]"
                       : "text-[#1f2937] hover:bg-[#f8fafc]"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
-                      <div className={`font-medium text-sm ${isSelected ? "text-white" : "text-[#1f2937]"}`}>
-                        {item.itemName || "Unnamed Item"}
+                      <div className={`font-medium text-sm flex items-center gap-1.5 ${isSelected ? "text-[#15803d]" : "text-[#1f2937]"}`}>
+                        <span>{item.itemName || "Unnamed Item"}</span>
+                        {isSelected && (
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#dcfce7] text-[#166534]">
+                            <Check size={10} strokeWidth={3} /> Selected
+                          </span>
+                        )}
                       </div>
-                      <div className={`text-xs mt-1 ${isSelected ? "text-white/80" : "text-[#64748b]"}`}>
+                      <div className={`text-xs mt-1 ${isSelected ? "text-[#16a34a]" : "text-[#64748b]"}`}>
                         SKU: {item.sku || "N/A"} • Purchase Rate: ₹{purchaseRate.toFixed(2)}
                       </div>
                     </div>
                     <div className="flex flex-col items-end shrink-0">
-                      <div className={`text-xs ${isSelected ? "text-white/80" : "text-[#64748b]"}`}>
+                      <div className={`text-xs ${isSelected ? "text-[#166534]" : "text-[#64748b]"}`}>
                         Stock on Hand
                       </div>
-                      <div className={`text-sm font-medium mt-0.5 ${isSelected ? "text-white" : "text-[#10b981]"}`}>
+                      <div className={`text-sm font-medium mt-0.5 ${isSelected ? "text-[#15803d]" : "text-[#10b981]"}`}>
                         {stockOnHand.toFixed(2)} pcs
                       </div>
                     </div>

@@ -40,6 +40,7 @@ const ItemDropdown = ({ rowId, value, onChange, warehouse, onNewItem, isStoreUse
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [dropdownPos, setDropdownPos] = useState({
     top: 0,
     left: 0,
@@ -235,6 +236,9 @@ const ItemDropdown = ({ rowId, value, onChange, warehouse, onNewItem, isStoreUse
     if (isOpen) {
       updatePos();
       setTimeout(updatePos, 0);
+      setActiveIndex(0);
+    } else {
+      setActiveIndex(-1);
     }
   }, [isOpen]);
 
@@ -324,12 +328,29 @@ const ItemDropdown = ({ rowId, value, onChange, warehouse, onNewItem, isStoreUse
       className={dropdownPos.openUpward ? "dropdown-animate-up" : "dropdown-animate"}
     >
       <div className="rounded-none shadow-2xl bg-white border border-[#e2e8f0] overflow-hidden" style={{ width: '100%' }}>
-        <div className="flex items-center gap-2 border-b border-[#f1f5f9] px-3 py-2 bg-white">
-          <Search size={14} className="text-[#9ca3af] shrink-0" />
+        <div className="flex items-center gap-2 border-b border-[#f1f5f9] px-3 py-2 bg-white focus-within:bg-[#f0fdf4]/30 focus-within:border-b-[#86efac] transition-colors">
+          <Search size={14} className="text-[#16a34a] shrink-0" />
           <input
             type="text"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setActiveIndex(0);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setActiveIndex((prev) => (prev < filteredItems.length - 1 ? prev + 1 : 0));
+              } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setActiveIndex((prev) => (prev > 0 ? prev - 1 : filteredItems.length - 1));
+              } else if (e.key === "Enter") {
+                e.preventDefault();
+                if (activeIndex >= 0 && filteredItems[activeIndex]) {
+                  handleSelectItem(filteredItems[activeIndex]);
+                }
+              }
+            }}
             placeholder="Search items..."
             className="h-7 w-full border-none bg-transparent text-sm text-[#111827] outline-none placeholder:text-[#9ca3af]"
             onClick={(e) => e.stopPropagation()}
@@ -344,7 +365,7 @@ const ItemDropdown = ({ rowId, value, onChange, warehouse, onNewItem, isStoreUse
               {searchTerm ? "No items found" : warehouse ? `No items available in ${warehouse}` : "No items available"}
             </div>
           ) : (
-            filteredItems.map((item) => {
+            filteredItems.map((item, index) => {
               // Get available stock - use availableForSale directly (same as item details page)
               const getAvailableStock = (item, targetWarehouse, isStoreUserParam = false) => {
                 if (!item.warehouseStocks || !Array.isArray(item.warehouseStocks) || !targetWarehouse) return 0;
@@ -393,6 +414,7 @@ const ItemDropdown = ({ rowId, value, onChange, warehouse, onNewItem, isStoreUse
               const purchaseRate = typeof item.sellingPrice === 'number' ? item.sellingPrice : (typeof item.costPrice === 'number' ? item.costPrice : 0);
               const isSelected = (typeof value === 'object' && value?._id === item._id) || 
                                  (typeof value === 'string' && value === (item.itemName || item._id));
+              const isActive = activeIndex === index;
               
               // Get group name if item is from a group
               const groupName = item.groupName || item.group?.name || (item.itemGroupId ? "Group: undefined" : null);
@@ -401,22 +423,40 @@ const ItemDropdown = ({ rowId, value, onChange, warehouse, onNewItem, isStoreUse
                 <div
                   key={item._id}
                   onClick={() => !isOutOfStock && handleSelectItem(item)}
-                  className={`px-4 py-3 transition-colors border-b border-[#f1f5f9] last:border-0 ${
+                  onMouseEnter={() => setActiveIndex(index)}
+                  className={`group px-4 py-3 transition-colors border-b border-[#f1f5f9] last:border-0 ${
                     isOutOfStock ? "opacity-40 cursor-not-allowed" : "cursor-pointer"
-                  } ${isSelected ? "bg-[#f0f4ff]" : "hover:bg-[#f8fafc]"}`}
+                  } ${
+                    isSelected || isActive
+                      ? "bg-[#f0fdf4] border-l-4 border-l-[#16a34a]"
+                      : "hover:bg-[#f0fdf4] hover:border-l-4 hover:border-l-[#22c55e]"
+                  }`}
                 >
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex-1 min-w-0">
-                      <div className={`text-sm font-semibold ${isSelected ? "text-[#4f46e5]" : "text-[#111827]"}`}>
-                        {item.itemName || "Unnamed Item"}
+                      <div className={`text-sm font-semibold flex items-center gap-1.5 transition-colors ${
+                        isSelected || isActive ? "text-[#15803d]" : "text-[#111827] group-hover:text-[#15803d]"
+                      }`}>
+                        <span>{item.itemName || "Unnamed Item"}</span>
+                        {isSelected && (
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#dcfce7] text-[#166534]">
+                            <Check size={10} strokeWidth={3} /> Selected
+                          </span>
+                        )}
                         {isOutOfStock && <span className="ml-2 text-xs font-normal text-[#ef4444]">(Out of Stock)</span>}
                       </div>
-                      <div className="text-xs text-[#9ca3af] mt-0.5">
+                      <div className={`text-xs mt-0.5 transition-colors ${
+                        isSelected || isActive ? "text-[#16a34a]" : "text-[#9ca3af] group-hover:text-[#16a34a]"
+                      }`}>
                         SKU: {item.sku || "N/A"} · Purchase Rate: ₹{purchaseRate.toFixed(2)}
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <div className="text-xs text-[#6b7280]">Stock on Hand</div>
+                      <div className={`text-xs transition-colors ${
+                        isSelected || isActive ? "text-[#166534]" : "text-[#6b7280] group-hover:text-[#166534]"
+                      }`}>
+                        Stock on Hand
+                      </div>
                       <div className={`text-sm font-semibold ${isOutOfStock ? "text-[#ef4444]" : "text-[#16a34a]"}`}>
                         {availableStock.toFixed(2)} pcs
                       </div>
@@ -475,7 +515,11 @@ const ItemDropdown = ({ rowId, value, onChange, warehouse, onNewItem, isStoreUse
             }
           }}
           placeholder="Type of click to select an item"
-          className="w-full h-9 rounded-none border border-[#e5e7eb] bg-white px-2.5 text-xs text-[#111827] placeholder:text-[#9ca3af] focus:border-[#8b5cf6] focus:outline-none transition-colors"
+          className={`w-full h-9 rounded-none border px-2.5 text-xs placeholder:text-[#9ca3af] focus:outline-none transition-colors ${
+            selectedItem
+              ? "border-[#86efac] bg-[#f0fdf4] text-[#15803d] font-semibold focus:border-[#22c55e]"
+              : "border-[#e5e7eb] bg-white text-[#111827] focus:border-[#8b5cf6]"
+          }`}
         />
       </div>
       {typeof document !== "undefined" && document.body && createPortal(dropdownPortal, document.body)}
@@ -3292,18 +3336,30 @@ Customer Service Available`;
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-[#E5E7EB] bg-white">
-                        {lineItems.map((item) => (
-                          <tr key={item.id} className="hover:bg-[#F9FAFB] transition-colors">
+                        {lineItems.map((item) => {
+                          const hasItem = Boolean(item.itemData || item.item);
+                          const isRowChecked = selectedItems.has(item.id);
+                          return (
+                          <tr
+                            key={item.id}
+                            className={`transition-colors ${
+                              isRowChecked
+                                ? "bg-[#ecfdf5]"
+                                : hasItem
+                                ? "bg-[#f0fdf4]/50 hover:bg-[#f0fdf4]"
+                                : "hover:bg-[#F9FAFB]"
+                            }`}
+                          >
                             <td className="px-3 py-2 text-center align-middle">
                               <input
                                 type="checkbox"
-                                checked={selectedItems.has(item.id)}
+                                checked={isRowChecked}
                                 onChange={(e) => {
                                   const s = new Set(selectedItems);
                                   e.target.checked ? s.add(item.id) : s.delete(item.id);
                                   setSelectedItems(s);
                                 }}
-                                className="h-4 w-4 rounded-none border-[#D1D5DB] text-[#8B5CF6] focus:ring-[#8B5CF6] cursor-pointer"
+                                className="h-4 w-4 rounded-none border-[#D1D5DB] text-[#16a34a] focus:ring-[#16a34a] cursor-pointer"
                               />
                             </td>
                             <td className="px-3 py-2 align-middle">
@@ -3412,7 +3468,8 @@ Customer Service Available`;
                               </button>
                             </td>
                           </tr>
-                        ))}
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -4454,7 +4511,7 @@ Customer Service Available`;
                                 availableStock <= 0
                                   ? 'bg-[#fef2f2] border border-[#fecaca] cursor-not-allowed opacity-75'
                                   : isSelected 
-                                  ? 'bg-[#f0f9ff] border border-[#bae6fd] cursor-pointer' 
+                                  ? 'bg-[#f0fdf4] border border-[#86efac] cursor-pointer' 
                                   : 'hover:bg-[#f9fafb] border border-transparent cursor-pointer'
                               }`}
                             >

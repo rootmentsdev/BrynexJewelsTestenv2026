@@ -2388,7 +2388,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { useEnterToSave } from "../hooks/useEnterToSave";
 import { createPortal } from "react-dom";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Search, X, Plus, Trash2, ArrowLeftRight, Package } from "lucide-react";
+import { Search, X, Plus, Trash2, ArrowLeftRight, Package, Check } from "lucide-react";
 import Head from "../components/Head";
 import Header from "../components/Header";
 import baseUrl from "../api/api";
@@ -3210,7 +3210,7 @@ const ItemDropdown = ({
                         handleSelectItem(item);
                       }}
                       className={`px-3 py-2.5 cursor-pointer transition-colors border-b border-[#f3f4f6] last:border-b-0 ${isSelected
-                        ? "bg-[#eff6ff] text-[#1e40af]"
+                        ? "bg-[#f0fdf4] border-l-4 border-l-[#16a34a]"
                         : isMatchReq
                           ? "bg-[#faf5ff] hover:bg-[#f3e8ff]"
                           : "hover:bg-[#f9fafb]"
@@ -3218,11 +3218,16 @@ const ItemDropdown = ({
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1 min-w-0">
-                          <div className={`font-medium text-sm ${isSelected ? "text-[#1e40af]" : "text-[#111827]"}`}>
-                            {item.itemName || "Unnamed Item"}
+                          <div className={`font-medium text-sm flex items-center gap-1.5 ${isSelected ? "text-[#15803d]" : "text-[#111827]"}`}>
+                            <span>{item.itemName || "Unnamed Item"}</span>
+                            {isSelected && (
+                              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#dcfce7] text-[#166534]">
+                                <Check size={10} strokeWidth={3} /> Selected
+                              </span>
+                            )}
                           </div>
-                          <div className={`text-xs mt-1 flex items-center gap-1.5 flex-wrap ${isSelected ? "text-[#1e40af]" : "text-[#64748b]"}`}>
-                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${isSelected ? "bg-blue-200 text-blue-800" : "bg-blue-100 text-blue-700"}`}>
+                          <div className={`text-xs mt-1 flex items-center gap-1.5 flex-wrap ${isSelected ? "text-[#16a34a]" : "text-[#64748b]"}`}>
+                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${isSelected ? "bg-[#dcfce7] text-[#166534]" : "bg-blue-100 text-blue-700"}`}>
                               ITEM
                             </span>
                             {item.groupName && (
@@ -3235,11 +3240,11 @@ const ItemDropdown = ({
                           </div>
                         </div>
                         <div className="flex flex-col items-end shrink-0">
-                          <div className={`text-[10px] uppercase tracking-wider ${isSelected ? "text-[#3b82f6]" : "text-[#9ca3af]"}`}>
+                          <div className={`text-[10px] uppercase tracking-wider ${isSelected ? "text-[#166534]" : "text-[#9ca3af]"}`}>
                             Current Stock
                           </div>
                           {Number(stockOnHand) > 0 ? (
-                            <div className={`text-sm font-semibold mt-0.5 ${isSelected ? "text-[#1e40af]" : "text-[#059669]"}`}>
+                            <div className={`text-sm font-semibold mt-0.5 ${isSelected ? "text-[#15803d]" : "text-[#059669]"}`}>
                               {(Number(stockOnHand) || 0).toFixed(2)} pcs
                             </div>
                           ) : (

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useEnterToSave } from "../hooks/useEnterToSave";
 import { createPortal } from "react-dom";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Search, ChevronLeft, Plus, ChevronDown, Trash2, RefreshCw, Calendar, FileText } from "lucide-react";
+import { Search, ChevronLeft, Plus, ChevronDown, Trash2, RefreshCw, Calendar, FileText, Check } from "lucide-react";
 import baseUrl from "../api/api";
 import { mapLocNameToWarehouse as mapWarehouse } from "../utils/warehouseMapping";
 import useSidebar from "../hooks/useSidebar";
@@ -426,20 +426,25 @@ const ItemDropdown = ({ rowId, value, onChange, warehouse, onStockFetched, userW
                   key={item._id}
                   onClick={() => handleSelectItem(item)}
                   className={`px-3.5 py-2.5 cursor-pointer transition-colors border-b border-gray-100 flex items-center justify-between ${
-                    isSelected ? "bg-purple-50 text-purple-900" : "hover:bg-gray-50 text-gray-800"
+                    isSelected ? "bg-[#f0fdf4] border-l-4 border-l-[#16a34a]" : "hover:bg-gray-50 text-gray-800"
                   }`}
                 >
                   <div>
-                    <div className="font-semibold text-xs text-gray-900">
-                      {item.itemName || item.name || "Unnamed Item"}
+                    <div className={`font-semibold text-xs flex items-center gap-1.5 ${isSelected ? "text-[#15803d]" : "text-gray-900"}`}>
+                      <span>{item.itemName || item.name || "Unnamed Item"}</span>
+                      {isSelected && (
+                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#dcfce7] text-[#166534]">
+                          <Check size={10} strokeWidth={3} /> Selected
+                        </span>
+                      )}
                     </div>
-                    <div className="text-[11px] text-gray-500 mt-0.5">
+                    <div className={`text-[11px] mt-0.5 ${isSelected ? "text-[#16a34a]" : "text-gray-500"}`}>
                       {item.isFromGroup && <span className="text-purple-600 font-medium">[{item.groupName}] </span>}
                       SKU: {item.sku || "—"}
                     </div>
                   </div>
                   {item.costPrice !== undefined && (
-                    <div className="text-xs font-semibold text-gray-600">
+                    <div className={`text-xs font-semibold ${isSelected ? "text-[#15803d]" : "text-gray-600"}`}>
                       ₹{parseFloat(item.costPrice || 0).toFixed(2)}
                     </div>
                   )}
