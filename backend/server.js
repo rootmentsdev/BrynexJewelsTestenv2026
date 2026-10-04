@@ -49,16 +49,7 @@ app.use(cookieParser());
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  "https://rootfin.vercel.app",
-  "https://rootfin.rootments.live",
-  "https://rootfin-testenv-clab.vercel.app",
-  "https://rootfin-testenv-3.onrender.com",
-  "https://rootfin-testenv-ebb5.onrender.com",
-  "https://api.rootments.live",
-  "https://rootfin-production.vercel.app",
-  "https://rootfinjewels.brynex.com",
-  "https://rootfin-brynex-testenv.vercel.app",
-  "https://brynex-jewels-bnwf.vercel.app"
+  "https://brynex-jewels-testenv2026.vercel.app"
 ];
 
 const corsOptions = {
