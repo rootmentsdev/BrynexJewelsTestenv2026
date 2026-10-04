@@ -1,0 +1,38 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node --max-old-space-size=2048 server.js",
+    "dev": "cross-env NODE_ENV=development node --max-old-space-size=2048 server.js",
+    "test:stock": "node test-purchase-receive-stock.js",
+    "check-transfers": "node scripts/check-transfer-orders.js",
+    "optimize:quick": "node scripts/quick-optimize.js",
+    "optimize:full": "node scripts/create-indexes.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.12.2",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^8.0.4",
+    "nodemon": "^3.1.9",
+    "pg": "^8.11.3",
+    "sequelize": "^6.35.2",
+    "swagger": "^0.7.5",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}

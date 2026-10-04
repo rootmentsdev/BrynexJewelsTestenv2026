@@ -1,0 +1,551 @@
+@import "tailwindcss";
+
+/* CACHE BUST v2.0 - Invoice page NO BLUE buttons - Updated 2026-04-25 */
+
+/* Global Font - Instrument Sans */
+@theme {
+  --font-family-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+* {
+  font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body, input, button, select, textarea, optgroup, option, table, th, td, div, span, p, h1, h2, h3, h4, h5, h6, label {
+  font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+/* Hide scrollbar for sidebar navigation */
+nav::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+nav {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Remove number input spinners (up/down arrows) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Prevent mouse wheel from changing number input values */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]:focus {
+  -moz-appearance: textfield;
+}
+
+/* Additional protection against wheel events on number inputs */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* Ensure number inputs don't respond to wheel events */
+input[type="number"] {
+  scroll-behavior: auto;
+}
+
+/* Button styles for Windows compatibility (excluding login button and invoice page) */
+body:not(:has(.invoice-page-wrapper)) button:not([type="submit"]):not(.tax-dropdown-button):not(.flex):not(.inline-flex),
+button:not([type="submit"]):not(.tax-dropdown-button):not(.invoice-page-wrapper button):not(.payment-method-btn):not(.flex):not(.inline-flex) {
+  /* Ensure buttons are visible on older Windows versions */
+  border: 1px solid transparent;
+  outline: none;
+  
+  /* Ensure proper display */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  
+  /* Font rendering for better visibility */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  
+  /* Cursor and interaction */
+  cursor: pointer;
+  user-select: none;
+  
+  /* Prevent text selection */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  
+  /* Ensure proper rendering */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button.flex, a.flex {
+  display: flex !important;
+}
+
+button.inline-flex, a.inline-flex {
+  display: inline-flex !important;
+}
+
+/* Remove universal blue button override rule so components can use custom colors like #9B48D7 */
+
+/* Invoice page specific styles */
+
+/* Override input focus colors for invoice page */
+.invoice-page-wrapper input:focus,
+.invoice-page-wrapper select:focus,
+.invoice-page-wrapper textarea:focus,
+div.invoice-page-wrapper input:focus,
+div.invoice-page-wrapper select:focus,
+div.invoice-page-wrapper textarea:focus {
+  border-color: #9ca3af !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.1) !important;
+}
+
+/* Override checkbox colors for invoice page */
+.invoice-page-wrapper input[type="checkbox"]:checked,
+div.invoice-page-wrapper input[type="checkbox"]:checked {
+  background-color: #374151 !important;
+  border-color: #374151 !important;
+}
+
+/* Override radio button colors for invoice page */
+.invoice-page-wrapper input[type="radio"]:checked,
+div.invoice-page-wrapper input[type="radio"]:checked {
+  background-color: #374151 !important;
+  border-color: #374151 !important;
+}
+
+/* Exclude custom buttons from blue styling - Reset only interfering properties */
+button.no-blue-button,
+button.custom-button,
+button.tax-dropdown-button,
+button.gst-treatment-button,
+button.state-dropdown-button,
+a.no-blue-button {
+  /* Reset all properties to allow Tailwind classes to work */
+  all: unset !important;
+  display: inline-flex !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+.sidebar-button {
+  background-color: transparent !important;
+  color: inherit !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  padding: 0.5rem 0.75rem !important; /* match px-3 py-2 */
+  border-radius: 0.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+.table-link-button {
+  background-color: transparent !important;
+  color: #2563eb !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  text-decoration: none !important;
+}
+
+.table-link-button:hover {
+  text-decoration: underline !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.table-action-button {
+  min-width: 24px !important;
+  min-height: 24px !important;
+  padding: 0 !important;
+  border-radius: 0.25rem !important;
+}
+
+
+/* Style input submit buttons for Windows compatibility */
+input[type="submit"] {
+  /* Ensure buttons are visible on older Windows versions */
+  appearance: button;
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  
+  /* Basic button styling for compatibility */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  outline: none;
+  
+  /* Ensure proper display */
+  display: inline-block;
+  vertical-align: middle;
+  
+  /* Font rendering for better visibility */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  
+  /* Cursor and interaction */
+  cursor: pointer;
+  user-select: none;
+  
+  /* Prevent text selection */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  
+  /* Ensure proper rendering */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  background-color: rgb(37, 99, 235) !important; /* Blue color for submit inputs */
+  color: white !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover states for better interaction feedback */
+body:not(:has(.invoice-page-wrapper)):not(:has(.inventory-adjustment-wrapper)) button:hover:not(.no-blue-button):not(.custom-button):not(.sidebar-button):not(.select-option):not(.table-link-button):not(.gst-treatment-button):not(.state-dropdown-button):not(.action-edit-btn):not(.action-delete-btn):not(.branch-select-btn):not(.no-hover-anim) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Override hover for no-blue and custom buttons */
+button.no-blue-button:hover,
+button.custom-button:hover,
+button.no-hover-anim:hover,
+.inventory-adjustment-wrapper button:hover,
+button.gst-treatment-button:hover,
+button.state-dropdown-button:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+/* Active states */
+body:not(:has(.invoice-page-wrapper)):not(:has(.inventory-adjustment-wrapper)) button:active:not(.no-blue-button):not(.custom-button):not(.sidebar-button):not(.select-option):not(.table-link-button):not(.gst-treatment-button):not(.state-dropdown-button):not(.action-edit-btn):not(.action-delete-btn):not(.branch-select-btn):not(.no-hover-anim) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button.no-blue-button:active,
+button.custom-button:active,
+button.no-hover-anim:active,
+.inventory-adjustment-wrapper button:active {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Focus states for accessibility - only when navigating with keyboard */
+button:focus:not(:focus-visible) {
+  outline: none !important;
+}
+button:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+
+/* Disabled state */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Table header styles */
+.table-header {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Custom scrollbar for dropdown - light gray like Zoho Books */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 5px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 5px;
+  border: 2px solid #f5f5f5;
+  min-height: 20px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Edit/Delete action buttons for ExistingUsers panel */
+button.action-edit-btn {
+  background-color: #e8eaf0 !important;
+  color: #1a1a1a !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  padding: 16px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  flex: 1 !important;
+  min-height: unset !important;
+  min-width: unset !important;
+}
+
+button.action-edit-btn:hover {
+  background-color: #d8dce6 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+button.action-delete-btn {
+  background-color: #fff0f0 !important;
+  color: #e53e3e !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  padding: 0 !important;
+  width: 52px !important;
+  height: 52px !important;
+  min-height: unset !important;
+  min-width: unset !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+}
+
+button.action-delete-btn:hover {
+  background-color: #ffe0e0 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+@media print {
+  /* Hide everything except printable content */
+  body > *:not(#root),
+  nav,
+  aside,
+  header:not(#printable-invoice header),
+  footer,
+  .ml-64,
+  .w-80,
+  .sidebar,
+  [class*="sidebar"],
+  button,
+  .no-print {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Reset body for print */
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Show only the printable invoice */
+  #printable-invoice {
+    display: block !important;
+    visibility: visible !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 15mm !important;
+    background: white !important;
+    box-shadow: none !important;
+  }
+
+  #printable-invoice * {
+    visibility: visible !important;
+  }
+
+  /* Page setup */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}
+
+
+/* ============================================================
+   DROPDOWN ANIMATIONS - Smooth open/close
+   ============================================================ */
+@keyframes dropdownOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dropdownOpenUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdown-animate {
+  animation: dropdownOpen 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top center;
+}
+
+.dropdown-animate-up {
+  animation: dropdownOpenUp 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: bottom center;
+}
+
+/* ============================================================
+   INVOICE PAGE - Sharp edges, Instrument Sans typography
+   ============================================================ */
+.invoice-page-wrapper,
+.invoice-page-wrapper * {
+  font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
+}
+
+.invoice-page-wrapper {
+  font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+/* Sharp edges for sharp containers */
+.invoice-page-wrapper .rounded-none {
+  border-radius: 0 !important;
+}
+
+/* Payment method buttons with visible borders matching design */
+.payment-method-btn,
+.invoice-page-wrapper .payment-method-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1.5px solid #e5e7eb !important;
+  border-radius: 12px !important;
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.15s ease-in-out !important;
+  cursor: pointer !important;
+  min-height: 50px !important;
+}
+
+.payment-method-btn:hover,
+.invoice-page-wrapper .payment-method-btn:hover {
+  border-color: #c084fc !important;
+  background-color: #faf5ff !important;
+}
+
+.payment-method-btn.payment-method-selected,
+.invoice-page-wrapper .payment-method-btn.payment-method-selected {
+  border: 2px solid #8b5cf6 !important;
+  background-color: #f5f3ff !important;
+  color: #111827 !important;
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2) !important;
+}
+
+.invoice-page-wrapper input,
+.invoice-page-wrapper select,
+.invoice-page-wrapper textarea {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.invoice-page-wrapper input:focus,
+.invoice-page-wrapper select:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.12) !important;
+  outline: none !important;
+}
+
+.invoice-page-wrapper table tbody tr {
+  transition: background-color 0.1s ease;
+}
+
+/* Payment card hover effect */
+.invoice-page-wrapper .payment-card {
+  transition: all 0.15s ease;
+}
+
+.invoice-page-wrapper .payment-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+}
+
+/* High-specificity Global Sidebar responsive margin rules for Header and all Page Containers */
+html body.sidebar-closed nav.bg-white,
+html body.sidebar-closed div[class*="ml-"],
+html body.sidebar-closed .ml-64,
+html body.sidebar-closed [class*="ml-[240px]"],
+html body.sidebar-closed [class*="ml-[290px]"] {
+  margin-left: 0 !important;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html body.sidebar-open nav.bg-white,
+html body.sidebar-open div[class*="ml-64"],
+html body.sidebar-open .ml-64 {
+  margin-left: 16rem !important;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+
+html body.sidebar-open [class*="ml-[240px]"] {
+  margin-left: 240px !important;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html body.sidebar-open [class*="ml-[290px]"] {
+  margin-left: 290px !important;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
